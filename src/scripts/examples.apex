@@ -32,6 +32,31 @@ Database.insert(contactList, false);
 //SOQL - Salesforce Object Querying Language
 //SOSL - Salesforce Object Search Language
 
+String query = 'SELECT ';
+List<String> fields = new List<String>();
+for(String s : fields) {
+    query = query + s + ', ';
+}
+
+query = query + ' FROM Contact';
+
+
+
+String fields = 'SELECT Id';
+String fields = fields + ', Name';
+String from = ' FROM Contact ';
+
+String where1 = 'WHERE CreatedDate = TODAY';
+String where2 = 'WHERE Name = \'Fady Labib\'';
+
+Database.query(fields + from + where1);
+Database.query(fields + from + where2);
+
+System.debug(Database.query('SELECT Id, Name FROM Contact WHERE CreatedDate = TODAY'));
+
+//System.debug([SELECT Id FROM Contact WHERE CreatedDate = TODAY]);
+
+
 for(Contact c : [SELECT Name, Email, Account.Name, Account.CreatedDate, Account.Owner.Name, Account.CreatedBy.Name
                 FROM Contact
                 WHERE Name = 'Jane Doe']){
