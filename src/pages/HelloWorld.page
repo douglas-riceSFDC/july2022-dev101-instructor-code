@@ -1,0 +1,32 @@
+<apex:page standardController="Timesheet__c" extensions="HelloWorldController">
+    <!-- Reference a controller method in a merge field -->
+    <h1>{!WelcomeMessage}</h1>
+
+    <!-- Reference the current User -->
+    <h2>{!$User.LastName}</h2>
+
+    <!-- Reference a single static resource -->
+    <apex:image url="{! $Resource.liveagent_online }" width="100" />
+
+    <!-- Reference an image inside a zip -->
+    <apex:image url="{! URLFOR($Resource.Stars, '/star5.png') }" width="200" />
+
+
+    <ul>
+        <!-- "Loop" through a collection returned from an Apex Class -->
+        <apex:repeat value="{!StringCollection}" var="singleString">
+            <li>{!singleString}</li>
+        </apex:repeat>
+
+        <li>Four</li>
+        <li>Five</li>
+        <li>Six</li>
+    </ul>
+
+    <!-- Other base Apex tag components also support collections! -->
+    <apex:pageBlock>
+        <apex:pageBlockTable value="{!StringCollection}" var="singleString">
+            <apex:column value="{!singleString}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

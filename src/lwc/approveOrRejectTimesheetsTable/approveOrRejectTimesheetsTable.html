@@ -1,0 +1,22 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-horizontal_small">
+            <table class="slds-table slds-table_bordered slds-table_striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={timesheets} for:item="timesheet">
+                        <tr key={timesheet.Id}>
+                            <td> {timesheet.Name} </td>
+                            <td> {timesheet.Status__c} </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
+</template>
