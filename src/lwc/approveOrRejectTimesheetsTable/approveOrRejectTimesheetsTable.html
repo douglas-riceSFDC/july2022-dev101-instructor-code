@@ -10,25 +10,25 @@
                     </h1>
                 </div>
                 <div class="slds-modal__content slds-p-around_small">
-                    <table class="slds-table slds-table_bordered slds-table_striped">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template for:each={timesheets} for:item="timesheet">
-                                <tr key={timesheet.Id}>
-                                    <td> {timesheet.Name} </td>
-                                    <td> {timesheet.Status__c} </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
+                    <lightning-datatable columns={columns}
+                                         key-field="Id"
+                                         data={timesheets}
+                                         onrowselection={handleSelectedRows}
+                    >
+                    </lightning-datatable>
                 </div>
                 <div class="slds-modal__footer">
                     <lightning-button label="Close" onclick={toggleModal}></lightning-button>
+                    <lightning-button label="Reject"
+                                      class="slds-p-left_x-small"
+                                      variant="destructive" 
+                                      onclick={rejectTimesheets}>
+                    </lightning-button>
+                    <lightning-button label="Approve" 
+                                      class="slds-p-left_x-small"
+                                      variant="success"
+                                      onclick={approveTimesheets}>
+                    </lightning-button>
                 </div>
             </div>
         </section>
