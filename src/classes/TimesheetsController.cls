@@ -13,4 +13,17 @@ public with sharing class TimesheetsController {
         }
     }
 
+    @AuraEnabled
+    public static void approveTimesheets(List<Timesheet__c> timesheetsToApprove) {
+        try {
+            for(Timesheet__c ts : timesheetsToApprove) {
+                ts.Status__c = 'Approved';
+            }
+
+            update timesheetsToApprove;
+        } catch(Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
 }

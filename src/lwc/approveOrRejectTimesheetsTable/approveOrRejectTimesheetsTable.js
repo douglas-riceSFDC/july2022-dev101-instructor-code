@@ -19,7 +19,15 @@ export default class ApproveOrRejectTimesheetsTable extends LightningElement {
     }
 
     approveTimesheets() {
-        // approve the selected rows
+        const evt = new CustomEvent('approvetimesheets', {
+            detail: {
+                timesheetsToApprove: this.selectedTimesheets
+            }
+        });
+
+        this.dispatchEvent(evt);
+
+        console.log('approve timesheets event fired');
     }
 
     rejectTimesheets() {
