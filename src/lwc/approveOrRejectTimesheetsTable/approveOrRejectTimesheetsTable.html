@@ -1,22 +1,37 @@
 <template>
-    <lightning-card>
-        <div class="slds-p-horizontal_small">
-            <table class="slds-table slds-table_bordered slds-table_striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template for:each={timesheets} for:item="timesheet">
-                        <tr key={timesheet.Id}>
-                            <td> {timesheet.Name} </td>
-                            <td> {timesheet.Status__c} </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-        </div>
-    </lightning-card>
+    <lightning-button label="Approve Or Reject Timesheets" onclick={toggleModal}></lightning-button>
+
+    <template if:true={modalShown}>
+        <section class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title">
+                        Approve or Reject Timesheets
+                    </h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_small">
+                    <table class="slds-table slds-table_bordered slds-table_striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={timesheets} for:item="timesheet">
+                                <tr key={timesheet.Id}>
+                                    <td> {timesheet.Name} </td>
+                                    <td> {timesheet.Status__c} </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={toggleModal}></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
 </template>
