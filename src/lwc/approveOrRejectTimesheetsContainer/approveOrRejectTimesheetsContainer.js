@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 import getRelatedTimesheets from '@salesforce/apex/TimesheetsController.getRelatedTimesheets';
 import approveTimesheets from '@salesforce/apex/TimesheetsController.approveTimesheets';
 import rejectTimesheets from '@salesforce/apex/TimesheetsController.rejectTimesheets';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class ApproveOrRejectTimesheetsContainer extends LightningElement {
     @api recordId;
@@ -26,9 +27,23 @@ export default class ApproveOrRejectTimesheetsContainer extends LightningElement
         approveTimesheets( { timesheetsToApprove: timesheetsToApprove } )
             .then(result => {
                 console.log('Timesheets approved successfully');
+
+                this.dispatchEvent(new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Timesheets approved successfully!',
+                    variant: 'success',
+                    mode: 'pester'
+                }));
+
             })
             .catch(error => {
                 console.warn(error);
+                this.dispatchEvent(new ShowToastEvent({
+                    title: 'There was an issue.',
+                    message: error.body.message,
+                    variant: 'error',
+                    mode: 'sticky'
+                }));
             });
     }
 

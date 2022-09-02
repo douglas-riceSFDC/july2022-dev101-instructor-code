@@ -4,6 +4,13 @@
     <template if:true={modalShown}>
         <section class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
+                <div class="slds-modal__close">
+                    <lightning-button-icon icon-name="utility:close"
+                                           onclick={toggleModal}
+                                           variant="bare-inverse"
+                                           size="large"
+                    ></lightning-button-icon>
+                </div>
                 <div class="slds-modal__header">
                     <h1 class="slds-modal__title">
                         Approve or Reject Timesheets
@@ -18,7 +25,6 @@
                     </lightning-datatable>
                 </div>
                 <div class="slds-modal__footer">
-                    <lightning-button label="Close" onclick={toggleModal}></lightning-button>
                     <lightning-button label="Reject"
                                       class="slds-p-left_x-small"
                                       variant="destructive" 
