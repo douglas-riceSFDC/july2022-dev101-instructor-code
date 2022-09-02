@@ -26,4 +26,17 @@ public with sharing class TimesheetsController {
         }
     }
 
+    @AuraEnabled
+    public static void rejectTimesheets(List<Timesheet__c> timesheetsToReject) {
+        try {
+            for(Timesheet__c ts: timesheetsToReject) {
+                ts.Status__c = 'Rejected';
+            }
+
+            update timesheetsToReject;
+        } catch(Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
 }

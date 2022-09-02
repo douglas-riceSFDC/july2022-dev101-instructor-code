@@ -11,6 +11,10 @@ export default class ApproveOrRejectTimesheetsTable extends LightningElement {
         { label: 'Times Rejected', fieldName: 'Number_of_Times_Rejected__c' }
     ];
 
+    get noTimesheetsSelected() {
+        return this.selectedTimesheets.length === 0;
+    }
+
     handleSelectedRows(event) {
         let selectedRows = event.detail.selectedRows;
         console.log(JSON.parse(JSON.stringify(selectedRows)));
@@ -31,7 +35,15 @@ export default class ApproveOrRejectTimesheetsTable extends LightningElement {
     }
 
     rejectTimesheets() {
+        let timesheets = this.selectedTimesheets;
 
+        let eventPayload = {
+            detail: {}
+        };
+
+        eventPayload.detail.timesheetsToReject = timesheets;
+
+        this.dispatchEvent(new CustomEvent('rejecttimesheets', eventPayload));
     }
 
     toggleModal() {

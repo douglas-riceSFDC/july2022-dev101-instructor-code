@@ -22,11 +22,13 @@
                     <lightning-button label="Reject"
                                       class="slds-p-left_x-small"
                                       variant="destructive" 
+                                      disabled={noTimesheetsSelected}
                                       onclick={rejectTimesheets}>
                     </lightning-button>
                     <lightning-button label="Approve" 
                                       class="slds-p-left_x-small"
                                       variant="success"
+                                      disabled={noTimesheetsSelected}
                                       onclick={approveTimesheets}>
                     </lightning-button>
                 </div>

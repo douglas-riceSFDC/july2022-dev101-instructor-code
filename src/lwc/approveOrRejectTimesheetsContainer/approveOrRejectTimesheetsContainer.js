@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import getRelatedTimesheets from '@salesforce/apex/TimesheetsController.getRelatedTimesheets';
 import approveTimesheets from '@salesforce/apex/TimesheetsController.approveTimesheets';
+import rejectTimesheets from '@salesforce/apex/TimesheetsController.rejectTimesheets';
 
 export default class ApproveOrRejectTimesheetsContainer extends LightningElement {
     @api recordId;
@@ -29,5 +30,26 @@ export default class ApproveOrRejectTimesheetsContainer extends LightningElement
             .catch(error => {
                 console.warn(error);
             });
+    }
+
+    handleRejectTimesheets(event) {
+        let timesheetsToReject = event.detail.timesheetsToReject;
+
+        let apexPayload = {
+            timesheetsToReject: timesheetsToReject
+        };
+
+        let rejectTimesheetsCallback = function(response) {
+            console.log('timesheets rejected successfully');
+            console.log(response);
+        }
+
+        let rejectTimesheetsErrorHandler = (error) => {
+            console.warn(error);
+        } 
+
+        rejectTimesheets(apexPayload)
+            .then(rejectTimesheetsCallback)
+            .catch(rejectTimesheetsErrorHandler);
     }
 }
