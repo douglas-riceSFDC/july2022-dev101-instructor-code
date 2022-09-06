@@ -46,7 +46,19 @@ export default class ApproveOrRejectTimesheetsTable extends LightningElement {
         this.dispatchEvent(new CustomEvent('rejecttimesheets', eventPayload));
     }
 
-    toggleModal() {
+    updateTimeSheets(event){
+        let status = event.currentTarget.dataset.status;
+        let timesheets = this.selectedTimesheets;
+        let eventPayload = {
+            detail: {
+                timesheets: timesheets,
+                status: status
+            }
+        };
+        this.dispatchEvent(new CustomEvent('updatetimesheets', eventPayload));
+    }
+
+    @api toggleModal() {
         this.modalShown = !this.modalShown;
     }
 }

@@ -1,23 +1,31 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import getRelatedTimesheets from '@salesforce/apex/TimesheetsController.getRelatedTimesheets';
 import approveTimesheets from '@salesforce/apex/TimesheetsController.approveTimesheets';
 import rejectTimesheets from '@salesforce/apex/TimesheetsController.rejectTimesheets';
+import updateTimesheets from '@salesforce/apex/TimesheetsController.updateTimesheets';
+import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class ApproveOrRejectTimesheetsContainer extends LightningElement {
     @api recordId;
+    wiredTimesheets;
     timesheets;
 
     connectedCallback() {
-        getRelatedTimesheets( { projectId: this.recordId } )
-            .then(result => {
-                this.timesheets = result;
-                console.log(result);
-            })
-            .catch(error => {
-                console.warn(error);
-            });
-    }    
+
+    }
+
+    @wire(getRelatedTimesheets,  { projectId: '$recordId' } )
+    wiredGetRelatedTimesheets(response) {
+        this.wiredTimesheets = response;
+        if (response.data) {
+            this.timesheets = response.data;
+            console.log(response.data);
+        }
+        else if (response.error) {
+            console.warn(response.data);
+        }
+    }
 
     handleApproveTimesheets(event) {
         let timesheetsToApprove = event.detail.timesheetsToApprove;
@@ -27,13 +35,14 @@ export default class ApproveOrRejectTimesheetsContainer extends LightningElement
         approveTimesheets( { timesheetsToApprove: timesheetsToApprove } )
             .then(result => {
                 console.log('Timesheets approved successfully');
-
                 this.dispatchEvent(new ShowToastEvent({
                     title: 'Success',
                     message: 'Timesheets approved successfully!',
                     variant: 'success',
                     mode: 'pester'
                 }));
+                refreshApex(this.wiredTimesheets);
+                this.template.querySelector('c-approve-or-reject-timesheets-table').toggleModal();
 
             })
             .catch(error => {
@@ -54,9 +63,11 @@ export default class ApproveOrRejectTimesheetsContainer extends LightningElement
             timesheetsToReject: timesheetsToReject
         };
 
-        let rejectTimesheetsCallback = function(response) {
+        let rejectTimesheetsCallback = (response) => {
             console.log('timesheets rejected successfully');
             console.log(response);
+            refreshApex(this.wiredTimesheets);
+            this.template.querySelector('c-approve-or-reject-timesheets-table').toggleModal();
         }
 
         let rejectTimesheetsErrorHandler = (error) => {
@@ -66,5 +77,34 @@ export default class ApproveOrRejectTimesheetsContainer extends LightningElement
         rejectTimesheets(apexPayload)
             .then(rejectTimesheetsCallback)
             .catch(rejectTimesheetsErrorHandler);
+    }
+
+
+    handleUpdateTimesheets(event) {
+        let timesheetsToUpdate = event.detail.timesheets;
+        let status = event.detail.status;
+
+        updateTimesheets({
+            timesheets: timesheetsToUpdate,
+            status: status
+        }).then(result => {
+            console.log('Successfully Updated');
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Success',
+                message: 'Timesheets updated successfully',
+                variant: 'success',
+                mode: 'pester'
+            }));
+            refreshApex(this.wiredTimesheets);
+            this.template.querySelector('c-approve-or-reject-timesheets-table').toggleModal();
+        }).catch(error => {
+            console.warn(error);
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Error',
+                message: error.body.message,
+                variant: 'error',
+                mode: 'pester'
+            }));
+        });
     }
 }

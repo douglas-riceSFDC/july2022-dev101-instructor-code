@@ -29,13 +29,17 @@
                                       class="slds-p-left_x-small"
                                       variant="destructive" 
                                       disabled={noTimesheetsSelected}
-                                      onclick={rejectTimesheets}>
+                                      onclick={updateTimeSheets}
+                                      data-status="Rejected"
+                    >
                     </lightning-button>
                     <lightning-button label="Approve" 
                                       class="slds-p-left_x-small"
                                       variant="success"
                                       disabled={noTimesheetsSelected}
-                                      onclick={approveTimesheets}>
+                                      onclick={updateTimeSheets}
+                                      data-status="Approved"
+                    >
                     </lightning-button>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 public with sharing class TimesheetsController {
 
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static List<Timesheet__c> getRelatedTimesheets(Id projectId) {
         try {
             return [
@@ -38,5 +38,19 @@ public with sharing class TimesheetsController {
             throw new AuraHandledException(e.getMessage());
         }
     }
+
+    @AuraEnabled
+    public static void updateTimesheets(List<Timesheet__c> timesheets, String status) {
+        try {
+            for(Timesheet__c ts : timesheets) {
+                ts.Status__c = status;
+            }
+
+            update timesheets;
+        } catch(Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
 
 }
