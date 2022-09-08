@@ -17,14 +17,36 @@
                     </h1>
                 </div>
                 <div class="slds-modal__content slds-p-around_small">
-                    <lightning-datatable columns={columns}
-                                         key-field="Id"
-                                         data={timesheets}
-                                         onrowselection={handleSelectedRows}
-                    >
-                    </lightning-datatable>
+                    <template if:false={isInsertNewTimesheetShown}>
+                        <lightning-datatable columns={columns}
+                                             key-field="Id"
+                                             data={timesheets}
+                                             onrowselection={handleSelectedRows}
+                        >
+                        </lightning-datatable>
+                    </template>
+                    <template if:true={isInsertNewTimesheetShown}>
+                        <lightning-record-edit-form
+                            object-api-name="Timesheet__c"
+                            onsuccess={handleSuccessfulInsert}
+                        >
+                            <lightning-input-field field-name={projectField}></lightning-input-field>
+                            <lightning-input-field field-name={statusField}></lightning-input-field>
+                            <lightning-button
+                                    type="submit"
+                                    label="Add Timesheet"
+                                    variant="brand"
+                            ></lightning-button>
+                        </lightning-record-edit-form>
+                    </template>
                 </div>
                 <div class="slds-modal__footer">
+                    <lightning-button
+                        label="Add New Timesheet"
+                        class="slds-p-left_x-small"
+                        variant="brand"
+                        onclick={toggleModalBody}>
+                    </lightning-button>
                     <lightning-button label="Reject"
                                       class="slds-p-left_x-small"
                                       variant="destructive" 

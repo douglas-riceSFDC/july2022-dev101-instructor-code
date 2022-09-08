@@ -1,8 +1,17 @@
 import { LightningElement, api } from 'lwc';
+import STATUS_FIELD from '@salesforce/schema/Timesheet__c.Status__c';
+import PROJECT_FIELD from '@salesforce/schema/Timesheet__c.Project__c';
+import TIMESHEET_INSERTION_SUCCESS_MESSAGE from '@salesforce/label/c.Timesheet_Insertion_Success_Message';
+import {ShowToastEvent} from "lightning/platformShowToastEvent";
 
 export default class ApproveOrRejectTimesheetsTable extends LightningElement {
     @api timesheets;
+
+    statusField = STATUS_FIELD;
+    projectField = PROJECT_FIELD;
+
     modalShown = false;
+    isInsertNewTimesheetShown = false;
     selectedTimesheets = [];
 
     columns = [
@@ -22,30 +31,6 @@ export default class ApproveOrRejectTimesheetsTable extends LightningElement {
         this.selectedTimesheets = selectedRows;
     }
 
-    approveTimesheets() {
-        const evt = new CustomEvent('approvetimesheets', {
-            detail: {
-                timesheetsToApprove: this.selectedTimesheets
-            }
-        });
-
-        this.dispatchEvent(evt);
-
-        console.log('approve timesheets event fired');
-    }
-
-    rejectTimesheets() {
-        let timesheets = this.selectedTimesheets;
-
-        let eventPayload = {
-            detail: {}
-        };
-
-        eventPayload.detail.timesheetsToReject = timesheets;
-
-        this.dispatchEvent(new CustomEvent('rejecttimesheets', eventPayload));
-    }
-
     updateTimeSheets(event){
         let status = event.currentTarget.dataset.status;
         let timesheets = this.selectedTimesheets;
@@ -60,5 +45,19 @@ export default class ApproveOrRejectTimesheetsTable extends LightningElement {
 
     @api toggleModal() {
         this.modalShown = !this.modalShown;
+    }
+
+    toggleModalBody() {
+        this.isInsertNewTimesheetShown = !this.isInsertNewTimesheetShown;
+    }
+
+    handleSuccessfulInsert(event) {
+        this.dispatchEvent(new ShowToastEvent({
+            title:  'Success',
+            message: TIMESHEET_INSERTION_SUCCESS_MESSAGE,
+            messageData: [event.detail.id],
+            variant: 'success',
+            mode: 'pester'
+        }));
     }
 }
