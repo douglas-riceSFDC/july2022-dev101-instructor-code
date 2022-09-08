@@ -53,4 +53,10 @@ export default class ApproveOrRejectTimesheetsContainer extends LightningElement
             }));
         });
     }
+
+    handleRefreshApexEvent(event) {
+        if(event.detail.message === 'success') {
+            refreshApex(this.wiredTimesheets);
+        }
+    }
 }

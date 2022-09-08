@@ -7,6 +7,7 @@ public with sharing class TimesheetsController {
                 SELECT Id, Name, Status__c, Number_of_Times_Rejected__c
                 FROM Timesheet__c
                 WHERE Project__c = :projectId
+                    ORDER BY CreatedDate ASC
             ];
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());

@@ -59,5 +59,19 @@ export default class ApproveOrRejectTimesheetsTable extends LightningElement {
             variant: 'success',
             mode: 'pester'
         }));
+
+        let eventPayload = {
+            detail: {
+                message: "success"
+            }
+        };
+
+        this.dispatchEvent(new CustomEvent('refreshapexevent', eventPayload));
+
+        this.toggleModalBody();
+    }
+
+    handleCreateNewTimesheet() {
+        this.template.querySelector('lightning-record-edit-form').submit();
     }
 }

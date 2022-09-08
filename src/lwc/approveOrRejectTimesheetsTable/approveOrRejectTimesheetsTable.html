@@ -16,7 +16,7 @@
                         Approve or Reject Timesheets
                     </h1>
                 </div>
-                <div class="slds-modal__content slds-p-around_small">
+                <div class="slds-modal__content modal_overflow slds-p-around_small">
                     <template if:false={isInsertNewTimesheetShown}>
                         <lightning-datatable columns={columns}
                                              key-field="Id"
@@ -29,40 +29,47 @@
                         <lightning-record-edit-form
                             object-api-name="Timesheet__c"
                             onsuccess={handleSuccessfulInsert}
+                            data-id="timesheet-form"
                         >
                             <lightning-input-field field-name={projectField}></lightning-input-field>
                             <lightning-input-field field-name={statusField}></lightning-input-field>
-                            <lightning-button
-                                    type="submit"
-                                    label="Add Timesheet"
-                                    variant="brand"
-                            ></lightning-button>
                         </lightning-record-edit-form>
                     </template>
                 </div>
                 <div class="slds-modal__footer">
-                    <lightning-button
-                        label="Add New Timesheet"
-                        class="slds-p-left_x-small"
-                        variant="brand"
-                        onclick={toggleModalBody}>
-                    </lightning-button>
-                    <lightning-button label="Reject"
-                                      class="slds-p-left_x-small"
-                                      variant="destructive" 
-                                      disabled={noTimesheetsSelected}
-                                      onclick={updateTimeSheets}
-                                      data-status="Rejected"
-                    >
-                    </lightning-button>
-                    <lightning-button label="Approve" 
-                                      class="slds-p-left_x-small"
-                                      variant="success"
-                                      disabled={noTimesheetsSelected}
-                                      onclick={updateTimeSheets}
-                                      data-status="Approved"
-                    >
-                    </lightning-button>
+                    <template if:true={isInsertNewTimesheetShown}>
+                        <lightning-button
+                            type="submit"
+                            label="Add Timesheet"
+                            variant="brand"
+                            onclick={handleCreateNewTimesheet}>
+                        </lightning-button>
+                    </template>
+
+                    <template if:false={isInsertNewTimesheetShown}>
+                        <lightning-button
+                            label="Add New Timesheet"
+                            class="slds-p-left_x-small"
+                            variant="brand"
+                            onclick={toggleModalBody}>
+                        </lightning-button>
+                        <lightning-button label="Reject"
+                                        class="slds-p-left_x-small"
+                                        variant="destructive" 
+                                        disabled={noTimesheetsSelected}
+                                        onclick={updateTimeSheets}
+                                        data-status="Rejected"
+                        >
+                        </lightning-button>
+                        <lightning-button label="Approve" 
+                                        class="slds-p-left_x-small"
+                                        variant="success"
+                                        disabled={noTimesheetsSelected}
+                                        onclick={updateTimeSheets}
+                                        data-status="Approved"
+                        >
+                        </lightning-button>
+                    </template>
                 </div>
             </div>
         </section>
