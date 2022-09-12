@@ -31,7 +31,7 @@
                             onsuccess={handleSuccessfulInsert}
                             data-id="timesheet-form"
                         >
-                            <lightning-input-field field-name={projectField}></lightning-input-field>
+                            <lightning-input-field field-name="Project__c" value={projectid}></lightning-input-field>
                             <lightning-input-field field-name={statusField}></lightning-input-field>
                         </lightning-record-edit-form>
                     </template>

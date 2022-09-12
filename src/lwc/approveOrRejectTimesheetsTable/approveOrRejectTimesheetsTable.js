@@ -6,6 +6,7 @@ import {ShowToastEvent} from "lightning/platformShowToastEvent";
 
 export default class ApproveOrRejectTimesheetsTable extends LightningElement {
     @api timesheets;
+    @api projectid;
 
     statusField = STATUS_FIELD;
     projectField = PROJECT_FIELD;
