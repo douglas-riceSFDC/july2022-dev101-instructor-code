@@ -27,5 +27,19 @@ public with sharing class TimesheetsController {
         }
     }
 
+    public static List<Timesheet__c> getTodaysTimesheets(Id projectId) {
+        try {
+            return [
+                SELECT Id, Name, Status__c, Number_of_Times_Rejected__c
+                FROM Timesheet__c
+                WHERE Project__c = :projectId
+                    AND CreatedDate = :Date.today()
+            ];
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+
 
 }
